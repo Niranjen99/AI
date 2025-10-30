@@ -11,7 +11,7 @@ from langchain_groq import ChatGroq
 from memory import get_memory
 import os
 from dotenv import load_dotenv
-from main import llm
+
 
 load_dotenv()
 
@@ -204,6 +204,7 @@ def generate_next_question(uid: str) -> Optional[Dict]:
     Use LLM to generate a contextual question based on profile gaps
     Returns dict with category and question, or None
     """
+    from main import llm
     if not should_ask_question(uid):
         return None
     

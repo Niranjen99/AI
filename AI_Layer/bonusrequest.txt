@@ -1,0 +1,32 @@
+Invoke-RestMethod -Uri "http://localhost:8000/notifications/nextaction" -Method Post -ContentType "application/json" -Body '{
+  "userId": "user_698",
+  "lastCompletedAction": {
+    "action_template_id": "68c986e06c9143419251cdb5",
+    "title": "Short Indoor Walk",
+    "description": "Walk at a comfortable pace for 5 minutes inside your home.",
+    "category": "Activity",
+    "target_value": 5,
+    "target_unit": "minutes",
+    "frequency": "daily",
+    "difficulty_level": "Beginner",
+    "completedAt": "2025-10-13T11:33:01.055Z"
+  },
+  "missedActions": [
+    {
+      "action_template_id": "68c986e06c9143419251cdc0",
+      "title": "Hydration Reminder",
+      "description": "Drink at least 1 glass of water every hour",
+      "frequency": "daily",
+      "difficulty_level": "Beginner",
+      "dueDate": "2025-10-13T09:00:00.000Z"
+    }
+  ],
+  "context": {
+    "timeSinceLastActionMinutes": 60,
+    "streakDays": 3,
+    "location": {
+      "lat": -34.9212,
+      "lng": 138.5995
+    }
+  }
+}'

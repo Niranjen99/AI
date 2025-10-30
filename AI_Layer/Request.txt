@@ -1,0 +1,12 @@
+Invoke-RestMethod -Uri "http://127.0.0.1:8000/chat" `
+  -Method POST `
+  -Headers @{ "Content-Type" = "application/json" } `
+  -Body '{"user_id": "user_123", "text": "What should I do today?"}'
+
+
+$response = Invoke-RestMethod -Uri "http://127.0.0.1:8000/chat" `
+  -Method POST `
+  -Headers @{ "Content-Type" = "application/json" } `
+  -Body '{"user_id": "user_123", "text": "What did I say just before"}'
+
+$response | ConvertTo-Json -Depth 10

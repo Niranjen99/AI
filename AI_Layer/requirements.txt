@@ -1,0 +1,20 @@
+# Smaller CPU-only PyTorch first
+torch==2.9.0+cpu
+-f https://download.pytorch.org/whl/cpu/torch_stable.html
+
+# Your ML/embedding library
+sentence-transformers
+
+# FastAPI stack
+fastapi
+uvicorn
+python-dotenv
+langchain_chroma
+langchain_groq
+langchain_huggingface
+langchain-community
+chromadb
+redis
+openai
+pydantic
+posthog==3.0.0

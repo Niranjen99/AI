@@ -1,0 +1,32 @@
+$response = Invoke-RestMethod -Uri "https://7424c166fc70.ngrok-free.app/frailty_routine" `
+  -Method POST `
+  -Headers @{ "Content-Type" = "application/json" } `
+  -Body '{
+    "uid": "bkvpxDzpnzOfHIEpc54leiRqjCS2",
+    "frailtyScore": 4,
+    "responses": [
+        {
+            "label": "Fatigue: How much of the time during the past 4 weeks did you feel tired?",
+            "value": "All or most of the time"
+        },
+        {
+            "label": "Resistance: By yourself and not using aids, do you have any difficulty walking up 10 steps without resting?",
+            "value": "Yes"
+        },
+        {
+            "label": "Illness: Did a doctor ever tell you that you have the following diagnosis (check all that apply)?",
+            "value": "Diabetes"
+        },
+        {
+            "label": "Loss of weight: Have you had weight loss of > 5% from your weight 1 year ago?",
+            "value": "Yes"
+        },
+        {
+            "label": "Resistance: By yourself and not using aids, do you have any difficulty…",
+            "value": "Yes"
+        }
+    ]
+}'
+
+# Convert the response to JSON for readability
+$response | ConvertTo-Json -Depth 10

@@ -4,10 +4,18 @@ from langchain_huggingface import HuggingFaceEmbeddings
 import json
 
 
-# ---- Redis (short-term + profile storage) ----
-REDIS_HOST = "localhost"
-REDIS_PORT = 6379
-redis_client = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
+import os
+
+
+# Use environment variables if available, fallback to localhost for local runs
+REDIS_HOST = os.getenv("REDIS_HOST", "redis")
+REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
+
+redis_client = redis.StrictRedis(
+    host=REDIS_HOST,
+    port=REDIS_PORT,
+    decode_responses=True
+)
 
 # ---- Chroma (long-term memory for evolving summaries) ----
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")

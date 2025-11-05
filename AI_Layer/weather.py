@@ -10,11 +10,12 @@ WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", "436c7058caf44466979233535250810"
 WEATHER_API_URL = "http://api.weatherapi.com/v1/current.json"
 AIR_QUALITY_ENABLED = True  # WeatherAPI includes AQI by default
 
-# Redis for caching
-REDIS_HOST = "localhost"
-REDIS_PORT = 6379
-redis_client = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT, decode_responses=True)
-
+redis_client = redis.Redis(
+    host=os.getenv("REDISHOST", "localhost"),
+    port=int(os.getenv("REDISPORT", 6379)),
+    password=os.getenv("REDISPASSWORD", None),
+    decode_responses=True
+)
 CACHE_DURATION = 1800  # 30 minutes in seconds
 
 

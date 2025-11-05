@@ -15,9 +15,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Redis connection
-redis_client = redis.Redis(host='redis', port=6379, db=0, decode_responses=True)
 
+
+redis_client = redis.Redis(
+    host=os.getenv("REDISHOST", "localhost"),
+    port=int(os.getenv("REDISPORT", 6379)),
+    password=os.getenv("REDISPASSWORD", None),
+    decode_responses=True
+)
 
 
 # AVOID categories and what we want to know about each

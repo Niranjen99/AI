@@ -7,15 +7,13 @@ import json
 import os
 
 
-# Use environment variables if available, fallback to localhost for local runs
-REDIS_HOST = os.getenv("REDIS_HOST", "redis")
-REDIS_PORT = int(os.getenv("REDIS_PORT", "6379"))
-
-redis_client = redis.StrictRedis(
-    host=REDIS_HOST,
-    port=REDIS_PORT,
+redis_client = redis.Redis(
+    host=os.getenv("REDISHOST", "localhost"),
+    port=int(os.getenv("REDISPORT", 6379)),
+    password=os.getenv("REDISPASSWORD", None),
     decode_responses=True
 )
+
 
 # ---- Chroma (long-term memory for evolving summaries) ----
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")

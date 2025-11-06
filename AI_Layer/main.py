@@ -316,7 +316,7 @@ You are LiveWell Coach. Based on the following frailty responses and user histor
 Instructions:
 - Only use the five AVOID categories above.
 - Ensure category is mapped correctly, if its walking its not socialisation its activity
-- Hydration actions → map to "Diet & nutrition".
+- Hydration actions → map to "Diet & nutrition"-> also use litres(L) instead of millilitres(mL) for the unit.
 - Ensure each action has a clear, simple description.
 - Provide numeric targets as strings, e.g., "15", "2".
 - Always suggest target unit and target value if its some like exercise or hydration, or something you can suggest without professional help.
@@ -537,6 +537,8 @@ Generate notification now:
 
 from pymongo import MongoClient
 from datetime import datetime, timedelta
+import os
+from dotenv import load_dotenv
 
 @app.post("/nudges")
 async def nudges(req: NudgeRequest):
@@ -545,8 +547,17 @@ async def nudges(req: NudgeRequest):
         memory_context = "\n".join(get_memory(req.uid, "personalized nudges"))
 
         # --- 2. Recent MongoDB logs ---
-        client = MongoClient("mongodb://localhost/livewell")
-        db = client["livewell"]
+        # client = MongoClient("mongodb://localhost/livewell")
+        # db = client["livewell"]
+        # logs_col = db["user_logs"]
+
+        load_dotenv()
+
+        MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost/livewell")
+        MONGO_DB = os.getenv("MONGO_DB", "livewell")
+
+        client = MongoClient(MONGO_URI)
+        db = client[MONGO_DB]
         logs_col = db["user_logs"]
 
         two_days_ago = datetime.utcnow() - timedelta(days=2)
@@ -627,11 +638,15 @@ User text: "{req.text}"
         import traceback
         traceback.print_exc()
         return {"intent": "Chat"}
-    
 
 
-client = MongoClient("mongodb://localhost/livewell")
-db = client["livewell"]
+load_dotenv()
+
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost/livewell")
+MONGO_DB = os.getenv("MONGO_DB", "livewell")
+
+client = MongoClient(MONGO_URI)
+db = client[MONGO_DB]
 resources_col = db["resources"]
 
 class ResourceItem(BaseModel):

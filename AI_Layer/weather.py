@@ -148,16 +148,38 @@ def parse_aqi_from_weather(weather_data: Dict) -> Optional[Dict]:
     }
 
 
+# def get_time_of_day() -> Tuple[str, int]:
+#     """
+#     Get current time period and hour.
+    
+#     Returns:
+#         Tuple of (period_name, hour)
+#     """
+#     now = datetime.now()
+#     hour = now.hour
+    
+#     if 5 <= hour < 8:
+#         return "early_morning", hour
+#     elif 8 <= hour < 12:
+#         return "morning", hour
+#     elif 12 <= hour < 17:
+#         return "afternoon", hour
+#     elif 17 <= hour < 21:
+#         return "evening", hour
+#     else:
+#         return "night", hour
+    
+
+import pytz  
+
 def get_time_of_day() -> Tuple[str, int]:
     """
-    Get current time period and hour.
-    
-    Returns:
-        Tuple of (period_name, hour)
+    Get current time period and hour (localized to Adelaide).
     """
-    now = datetime.now()
+    adelaide_tz = pytz.timezone("Australia/Adelaide")
+    now = datetime.now(adelaide_tz)
     hour = now.hour
-    
+
     if 5 <= hour < 8:
         return "early_morning", hour
     elif 8 <= hour < 12:

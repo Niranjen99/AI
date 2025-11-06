@@ -243,11 +243,20 @@ Focus on:
     try:
         new_summary = llm.invoke(prompt).content.strip()
         if new_summary:
-            #vectorstore.delete(where={"tag": f"{uid}_summary"})
-            vectorstore.add_texts(
-                [new_summary],
-                metadatas=[{"tag": f"{uid}_summary"}]
-            )
+                try:
+                    vectorstore._collection.delete(where={"tag": f"{uid}_summary"})
+                except Exception as e:
+                    print(f"Delete old summary failed: {e}")
+
+                # --- Add the new evolving summary ---
+                vectorstore.add_texts(
+                    [new_summary],
+                    metadatas=[{"tag": f"{uid}_summary"}]
+                )
+
+                # Persist changes to local DB
+                vectorstore.persist()
+           
     except Exception as e:
         print(f"Failed to generate summary via LLM: {e}")
 

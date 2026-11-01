@@ -6,7 +6,7 @@ import json
 import redis
 
 # API Configuration - WeatherAPI.com
-WEATHER_API_KEY = os.getenv("WEATHER_API_KEY", "436c7058caf44466979233535250810")
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")  # Set in .env, never hardcode
 WEATHER_API_URL = "http://api.weatherapi.com/v1/current.json"
 AIR_QUALITY_ENABLED = True  # WeatherAPI includes AQI by default
 

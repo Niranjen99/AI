@@ -30,6 +30,17 @@ llm = ChatGroq(
     model_name="openai/gpt-oss-120b"
 )
 
+def strip_code_fences(text: str) -> str:
+    """Remove ```json ... ``` markdown fences the LLM sometimes wraps around JSON."""
+    text = text.strip()
+    if text.startswith("```"):
+        text = text.split("```")[1]
+        if text.startswith("json"):
+            text = text[4:]
+        text = text.strip()
+    return text
+
+
 class ChatRequest(BaseModel):
     uid: str
     text: str
@@ -259,11 +270,7 @@ IMPORTANT: Return ONLY the JSON object, nothing else. No markdown formatting, no
                 raise e
         
         # Remove markdown code blocks if present
-        if llm_response.startswith("```"):
-            llm_response = llm_response.split("```")[1]
-            if llm_response.startswith("json"):
-                llm_response = llm_response[4:]
-            llm_response = llm_response.strip()
+        llm_response = strip_code_fences(llm_response)
 
         # Parse and save to memory
         try:
@@ -330,7 +337,7 @@ Frailty Responses:
 
         import json
         try:
-            actions_data = json.loads(raw_response)
+            actions_data = json.loads(strip_code_fences(raw_response))
         except Exception:
             actions_data = {"actions": []}
 
@@ -509,7 +516,7 @@ Generate notification now:
         
         # Parse JSON response
         try:
-            response_data = json.loads(llm_response)
+            response_data = json.loads(strip_code_fences(llm_response))
         except json.JSONDecodeError:
             # Fallback response
             response_data = {
@@ -616,7 +623,7 @@ User text: "{req.text}"
         # Parse JSON safely
         import json
         try:
-            result = json.loads(response)
+            result = json.loads(strip_code_fences(response))
         except json.JSONDecodeError:
             # Fallback if LLM returns slightly invalid JSON
             # Basic heuristic: check for keywords
@@ -627,7 +634,7 @@ User text: "{req.text}"
                 result = {"intent": "Navigate", "screen": "profile"}
             elif "home" in text_lower:
                 result = {"intent": "Navigate", "screen": "home"}
-            elif "Leaderboard" in text_lower:
+            elif "leaderboard" in text_lower:
                 result = {"intent": "Navigate", "screen": "Leaderboard"}
             else:
                 result = {"intent": "Chat"}
